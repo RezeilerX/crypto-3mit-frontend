@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  padding: 1.5em 2em;
+}
+
+.header-nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.header-menu {
+  @include list-reset;
+  display: flex;
+  gap: 2em;
+}
