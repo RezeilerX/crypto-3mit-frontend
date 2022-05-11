@@ -1,0 +1,119 @@
+// Media Querys mixin helper
+@mixin media-query($from, $to: null) {
+  @if $from == 0 {
+    // Sass has only false and null values ​​as falsy because of this, in case the
+    // value of $from is 0, the condition will pass.
+
+    // Info:
+    // https://sass-lang.com/documentation/operators/boolean#truthiness-and-falsiness
+    $from: null;
+  }
+
+  @if $from {
+    @if map-has-key($breakpoints, $from) {
+      $from: map-get($breakpoints, $from);
+    }
+
+    @if type-of($from) == 'string' {
+      @error 'No existe el breakpoint "#{$from}"';
+    }
+
+    @if unit($from) != 'em' {
+      @error 'La unidad para los breakpoints deben ser em, el valor "#{$from}" no es valido';
+    }
+  }
+
+  @if $to {
+    @if map-has-key($breakpoints, $to) {
+      $to: map-get($breakpoints, $to);
+    }
+
+    @if type-of($to) == 'string' {
+      @error 'No existe el breakpoint "#{$to}"';
+    }
+
+    @if unit($to) != 'em' {
+      @error 'La unidad para los breakpoints deben ser em, el valor "#{$to}" no es valido';
+    }
+  }
+
+  @if $from and not $to {
+    @media screen and (min-width: $from) {
+      @content;
+    }
+  }
+
+  @if $from and $to {
+    @media screen and (min-width: $from) and (max-width: $to) {
+      @content;
+    }
+  }
+
+  @if not $from and $to {
+    @media screen and (max-width: $to) {
+      @content;
+    }
+  }
+}
+
+// Mixin to create a margin utility with passed value
+@mixin create-margin-utility($value) {
+  $abs-value: $value;
+  $prefix: '';
+  $postfix: '';
+
+  @if type-of($value) == 'number' {
+    $abs-value: abs($value);
+    $is-negative: $abs-value != $value;
+    $is-percent: unit($value) == '%';
+
+    @if unitless($value) {
+      $value: $value * 1rem;
+    }
+
+    @if $is-negative {
+      $prefix: 'n';
+    }
+
+    @if $is-percent == '%' {
+      $postfix: 'p';
+    }
+  }
+
+  .u-m-#{$prefix}#{$abs-value}#{$postfix} {
+    margin: $value !important;
+  }
+
+  .u-mt-#{$prefix}#{$abs-value}#{$postfix} {
+    margin-top: $value !important;
+  }
+
+  .u-mr-#{$prefix}#{$abs-value}#{$postfix} {
+    margin-right: $value !important;
+  }
+
+  .u-mb-#{$prefix}#{$abs-value}#{$postfix} {
+    margin-bottom: $value !important;
+  }
+
+  .u-ml-#{$prefix}#{$abs-value}#{$postfix} {
+    margin-left: $value !important;
+  }
+
+  .u-my-#{$prefix}#{$abs-value}#{$postfix} {
+    margin-top: $value !important;
+    margin-bottom: $value !important;
+  }
+
+  .u-mx-#{$prefix}#{$abs-value}#{$postfix} {
+    margin-right: $value !important;
+    margin-left: $value !important;
+  }
+}
+
+// List reset
+@mixin list-reset {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}

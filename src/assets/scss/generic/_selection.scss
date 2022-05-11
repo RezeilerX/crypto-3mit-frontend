@@ -1,0 +1,8 @@
+::selection {
+  background: lighten($dark-color, 0.5);
+  color: revert
+}
+
+* {
+  -webkit-tap-highlight-color: lighten($dark-color, 0.2);
+}

@@ -1,0 +1,36 @@
+// Removes the unit of the passed number
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+@function boolean($value) {
+  @return not(not($value));
+}
+
+@function is-float($number) {
+  @return boolean(str-index(quote($number), '.'));
+}
+
+@function pxToEm($pixels, $context: 16px) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1em;
+}
+
+@function remToEm($rem) {
+  @if (unit($rem) != 'rem') {
+    @error 'The parameter rem must be a rem unit';
+  }
+
+  @return ($rem / 1rem) * 1em;
+}
